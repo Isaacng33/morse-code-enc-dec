@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>Morse Code</title>
+<script>
+
+function encdec(){
+	let str_input = document.getElementById("input").value;
+	let operation = document.getElementById("operation").value;
+	
+	const mcode = {
+      'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+      'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+      'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+      'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+      'Y': '-.--', 'Z': '--..', ' ': ' ', '0': '-----',
+      '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+      '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+      '&': '.-...', "'": '.----.', '@': '.--.-.', ')': '-.--.-', '(': '-.--.',
+      ':': '---...', ',': '--..--', '=': '-...-', '!': '-.-.--', '.': '.-.-.-',
+      '-': '-....-', '+': '.-.-.', '"': '.-..-.', '?': '..--..', '/': '-..-.'
+    }
+	
+	var answer = "";
+    var temp = 0;
+    if (operation == "enc") { // Check for button choice
+        str_input_upper = str_input.toUpperCase(); // Match mcode keys
+        for (let i of str_input_upper) { // Loop through str to get char
+            if (i in mcode === false) {
+                window.alert("Invalid input"); // Window alert for invalid
+                temp = 1;
+                break;
+            }
+            for (let key in mcode) { // Loop to check keys dict
+                if (i === key) {
+                    if (i == " ") { // Check for spaces
+                        answer = answer + i; // Add space in ans if space
+                    } else {
+                        answer = answer + " " + mcode[key]; // Add mcode
+                    }
+                }
+            }
+        }
+        if (temp != 1) {
+            answer = answer.slice(1) // Remove first space in the str
+            document.getElementById("output").innerHTML = answer;
+        }
+    } else {
+        var temp2 = 0;
+        var comp = 0;
+        let temp_answer = [];
+        str_input.split("  ").map(function (word) { // Split double spaces & temporary store in word
+            word.split(" ").map(function (charac) { // Split single spaces & temporary store in letter
+                comp += 1;
+                for (const [key, value] of Object.entries(mcode)) { // Loop thru keys in mcode
+                    if (charac == value) { // check if value is same as letter
+                        temp_answer.push(key); // append key onto temp arr
+                        temp2 += 1;
+                    }
+                }
+            });
+            temp_answer.push(" "); // add space after charac fucntion end before the next word start
+        });
+        if (comp != temp2) {
+            windows.alert("Invalid Input");
+        } else {
+            answer = temp_answer.join("") // join all arr values with no spaces in between
+            document.getElementById("output").innerHTML = answer;
+        }
+
+    }
+}
+
+</script>
+</head>
+<body>
+<H1>Morse code encoder/decoder</H1>
+<h3>@author: Isaac Ng Wen Shen </h3>
+<div>
+<form>
+<p> Enter a string</p>
+<p> <textarea id="input" rows='5' cols='50'></textarea> </p>
+<p>
+<div id="optionloc" style="position:absolute; top:190px; left:240px;">
+<select id="operation">
+<option value="enc">Encode</option>
+<option value="dec">Decode</option>
+</select>
+</div>
+<div id="buttonloc" style="position:absolute; top:190px; left:320px;">
+<button type="button" id="submit" onclick=encdec()>Submit</button>
+</div>
+</p>
+
+<div>
+<p>Encoded/decoded Morse code: </p>
+<textarea id="output" rows='5' cols='50' readonly></textarea>
+</div>
+</form>
+</div>
+</body>
+</html>
